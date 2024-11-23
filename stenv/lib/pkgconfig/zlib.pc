@@ -1,0 +1,13 @@
+prefix=/Users/augustoalasino/Documents/Projects/SAAS_Project/stenv
+exec_prefix=/Users/augustoalasino/Documents/Projects/SAAS_Project/stenv
+libdir=/Users/augustoalasino/Documents/Projects/SAAS_Project/stenv/lib
+sharedlibdir=/Users/augustoalasino/Documents/Projects/SAAS_Project/stenv/lib
+includedir=/Users/augustoalasino/Documents/Projects/SAAS_Project/stenv/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
