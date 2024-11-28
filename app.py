@@ -63,6 +63,9 @@ if fuente == 'Youtube':
             st.markdown('---')
 
             if video_id:
+
+                instrucciones_youtube = 'https://docs.google.com/document/d/1x8n3LxxZzESsgeyVz3rc70qXemclm04s5n4Hxvi9nX8/edit?usp=sharing'
+                st.markdown("[Instrucciones para obtener una clave de API gratuita](" + instrucciones_youtube + ")")
                 
                 api_key = st.text_input("Ingresa tu clave de API de Youtube", type = 'password')
 
@@ -119,6 +122,9 @@ if fuente == 'Youtube':
              playlist_id = playlist_id.split() 
 
              st.markdown('---')
+
+             instrucciones_youtube = 'https://docs.google.com/document/d/1x8n3LxxZzESsgeyVz3rc70qXemclm04s5n4Hxvi9nX8/edit?usp=sharing'
+             st.markdown("[Instrucciones para obtener una clave de API gratuita](" + instrucciones_youtube + ")")
              
              api_key = st.text_input("Ingresa tu clave de API de Youtube", type = 'password')
              
@@ -184,6 +190,9 @@ if fuente == 'Youtube':
 
         if busqueda:
             st.write('Tener en cuenta que se priorizan resultados en lenguaje en español automáticamente.')
+
+            instrucciones_youtube = 'https://docs.google.com/document/d/1x8n3LxxZzESsgeyVz3rc70qXemclm04s5n4Hxvi9nX8/edit?usp=sharing'
+            st.markdown("[Instrucciones para obtener una clave de API gratuita](" + instrucciones_youtube + ")")
 
             api_key = st.text_input("Ingresa tu clave de API de Youtube", type = 'password')
 
@@ -260,6 +269,10 @@ if fuente == 'Youtube':
             canal = canal.group(2)
             st.write('Canal: ' + str(canal))
             st.write('---')
+
+            instrucciones_youtube = 'https://docs.google.com/document/d/1x8n3LxxZzESsgeyVz3rc70qXemclm04s5n4Hxvi9nX8/edit?usp=sharing'
+            st.markdown("[Instrucciones para obtener una clave de API gratuita](" + instrucciones_youtube + ")")
+
             api_key = st.text_input("Ingresa tu clave de API de Youtube", type = 'password')
 
             if api_key:
@@ -329,30 +342,6 @@ if fuente == 'Youtube':
 
 elif fuente == 'Reddit':
 
-    st.title('Social Listening - Reddit')
-
-    st.write('\n')
-
-    st.write('Reddit destaca como plataforma de social listening por sus comunidades temáticas donde se generan discusiones detalladas. Ofrece una visión profunda de las opiniones y problemas que preocupan a los usuarios, facilitando la identificación de tendencias y análisis de las percepciones en temas específicos.')
-
-    st.markdown('---')  # Línea horizontal
-
-    opcion_seleccionada = st.radio(
-        'Selecciona una acción:',
-        ('Extraer comentarios de un posteo específico.', 
-        'Extraer posteos filtrados por palabras clave y sus comentarios, dentro de un subreddit especifico.',
-        'Extraer los últimos posteos en los que se mencionen palabras específicas y sus comentarios.')
-    )
-
-    st.markdown('---')        
-
-    st.write('Credenciales de la API de Reddit')
-    app_name = st.text_input("Ingresa tu nombre de la App creada")
-    user_id = st.text_input("Ingresa tu nombre de usuario de Reddit")
-    client_id = st.text_input("Ingresa tu ID de cliente (Client ID)", type = 'password')
-    client_secret = st.text_input("Ingresa tu ID secreto (Secret ID)", type = 'password')
-
-
     # Funciones utiles solo para Reddit
     def fetch_comments_from_url(post_url):
         try:
@@ -378,171 +367,201 @@ elif fuente == 'Reddit':
                               'IsReplies': None,
                               'CommentScores': None})
 
-    if opcion_seleccionada == 'Extraer comentarios de un posteo específico.':
-        
-        st.markdown('---')        
-        post_url = st.text_input("Ingresa un enlace (URL):")
+    st.title('Social Listening - Reddit')
 
-# Replace these with your credentials
+    st.write('\n')
+
+    st.write('Reddit destaca como plataforma de social listening por sus comunidades temáticas donde se generan discusiones detalladas. Ofrece una visión profunda de las opiniones y problemas que preocupan a los usuarios, facilitando la identificación de tendencias y análisis de las percepciones en temas específicos.')
+
+    st.markdown('---')  # Línea horizontal
+
+    st.write('Credenciales de la API de Reddit')
+
+    instrucciones_reddit = 'https://docs.google.com/document/d/1mrfGolWA4nnHBlcpNYebgRLRRZLd9_54qaGfLOFaubw/edit?usp=sharing'
+    st.markdown("[Instrucciones para obtener una clave de API gratuita](" + instrucciones_reddit + ")")
+
+    app_name = st.text_input("Ingresa el nombre de la App creada")
+    user_id = st.text_input("Ingresa tu nombre de usuario de Reddit")
+    client_id = st.text_input("Ingresa tu ID de cliente (Client ID)", type = 'password')
+    client_secret = st.text_input("Ingresa tu ID secreto (Secret ID)", type = 'password')
+
+    st.markdown('---')  # Línea horizontal
+
+    if app_name and user_id and client_id and client_secret:
+
+        opcion_seleccionada = st.radio(
+            'Selecciona una acción:',
+            ('Extraer comentarios de un posteo específico.', 
+            'Extraer posteos filtrados por palabras clave y sus comentarios, dentro de un subreddit especifico.',
+            'Extraer los últimos posteos en los que se mencionen palabras específicas y sus comentarios.')
+            )
+
+
+        if opcion_seleccionada == 'Extraer comentarios de un posteo específico.':
         
-        if post_url: 
-            reddit = praw.Reddit(
-            client_id= client_id,
-            client_secret=client_secret,
-            user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
-            check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
-            # Specify the post URL
+            st.markdown('---')        
+            post_url = st.text_input("Ingresa un enlace (URL):")
+
             
-            title, content, comment_ids, parent_ids, authors, bodies, is_reply, scores = extract_comments_from_reddit_post(reddit , post_url)
-
-            # Create a DataFrame for comments
-            comments_df = pd.DataFrame({
-                'PostTitle': title,
-                'PostContent': content,
-                'CommentID': comment_ids,
-                'ParentCommentID': parent_ids,
-                'CommentAuthor': authors,
-                'CommentBody': bodies,
-                'IsReply': is_reply,
-                'Score': scores})
-
-            if not comments_df.empty:
-
-                            st.markdown('---')
-                            st.write("Dataset finalizado.")
-                            
-                            # Exportar a CSV
-                            csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
-                            st.download_button(
-                                label="Descargar CSV",
-                                data=csv,
-                                file_name='video_comments.csv',
-                                mime='text/csv')
-
-
-    elif opcion_seleccionada == 'Extraer posteos filtrados por palabras clave y sus comentarios, dentro de un subreddit especifico.':
-
-        st.markdown('---')
-        subreddit_name = st.text_input("Ingresa el subreddit: ")
-
-        # Reddit client
-        reddit = praw.Reddit(
-            client_id= client_id,
-            client_secret=client_secret,
-            user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
-            check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
-
-        if subreddit_name:
-
-            subreddit = reddit.subreddit(subreddit_name)
-
-            search_query = st.text_input("Indica la palabra clave para filtrar los posteos: ")
+            # Replace these with your credentials
+            if post_url: 
+                reddit = praw.Reddit(
+                client_id= client_id,
+                client_secret=client_secret,
+                user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
+                check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
+                # Specify the post URL
             
-            title = []
-            score = []
-            url = []
+                title, content, comment_ids, parent_ids, authors, bodies, is_reply, scores = extract_comments_from_reddit_post(reddit , post_url)
 
-            if search_query:
+                # Create a DataFrame for comments
+                comments_df = pd.DataFrame({
+                    'PostTitle': title,
+                    'PostContent': content,
+                    'CommentID': comment_ids,
+                    'ParentCommentID': parent_ids,
+                    'CommentAuthor': authors,
+                    'CommentBody': bodies,
+                    'IsReply': is_reply,
+                    'Score': scores})
 
-                max_results = st.slider('Selecciona la cantidad de posts deseados (1-50)', min_value=1, max_value=50, value=20)
+                if not comments_df.empty:
 
-                if st.button('Confirmar Eleccion'):
-                    
-                    posts = []
-
-                    for submission in subreddit.search(query=search_query, sort='new',limit = int(max_results)):
-                        post_date = datetime.utcfromtimestamp(submission.created_utc).strftime('%Y-%m-%d %H:%M:%S')
-                        submission.comments.replace_more(limit=0)
-                        
-                        # Append post and comments data to the list
-                        posts.append({
-                            "subreddit": subreddit_name,
-                            "title": submission.title,
-                            "score": submission.score,
-                            "url": submission.url,
-                            "post_text": submission.selftext,
-                            "date_created": post_date
-                        })
-                    
-                    comments_df = pd.DataFrame(posts)
-
-                    st.write('Posteos encontrados:')
-                    st.dataframe(comments_df)
-
-                    # Crear un contenedor temporal
-                    loading_message = st.empty()
-
-                    # Mostrar un mensaje de carga
-                    loading_message.text("Extrayendo comentarios...")
-                    
-                    comments_df = comments_df.join(comments_df['url'].apply(fetch_comments_from_url))
-                    
-                    comments_df = comments_df.explode(['CommentID', 'ParentCommentID', 'CommentAuthor', 'CommentBody', 'IsReply', 'Score'])
-                    loading_message.empty()
-
-                    if not comments_df.empty:
-
-                            st.markdown('---')
-                            st.write("Dataset finalizado.")
+                                st.markdown('---')
+                                st.write("Dataset finalizado.")
                             
-                            # Exportar a CSV
-                            csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
-                            st.download_button(
-                                label="Descargar CSV",
-                                data=csv,
-                                file_name='video_comments.csv',
-                                mime='text/csv')
+                                # Exportar a CSV
+                                csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
+                                st.download_button(
+                                    label="Descargar CSV",
+                                    data=csv,
+                                    file_name='video_comments.csv',
+                                    mime='text/csv')
 
 
-    elif opcion_seleccionada == 'Extraer los últimos posteos en los que se mencionen palabras específicas y sus comentarios.':
+        elif opcion_seleccionada == 'Extraer posteos filtrados por palabras clave y sus comentarios, dentro de un subreddit especifico.':
 
-        st.markdown('---')        
-        
-        search_query = st.text_input("Indica la palabra clave para filtrar los posteos: ")
-
-        if search_query:
+            st.markdown('---')
+            subreddit_name = st.text_input("Ingresa el subreddit: ")
 
             # Reddit client
             reddit = praw.Reddit(
-            client_id= client_id,
-            client_secret=client_secret,
-            user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
-            check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
+                client_id= client_id,
+                client_secret=client_secret,
+                user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
+                check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
 
-            posts = get_last_reddit_posts(reddit ,str(search_query), 100)
-            df = pd.DataFrame(posts)
+            if subreddit_name:
 
-            def convert_utc_to_date(utc_timestamp):
-                return datetime.utcfromtimestamp(utc_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                subreddit = reddit.subreddit(subreddit_name)
+
+                search_query = st.text_input("Indica la palabra clave para filtrar los posteos: ")
                 
-            df['created_date'] = df['created_date'].apply(convert_utc_to_date)
+                title = []
+                score = []
+                url = []
 
-            st.write('Posteos encontrados:')
-            st.dataframe(df)
+                if search_query:
 
-            # Crear un contenedor temporal
-            loading_message = st.empty()
+                    max_results = st.slider('Selecciona la cantidad de posts deseados (1-50)', min_value=1, max_value=50, value=20)
 
-            # Mostrar un mensaje de carga
-            loading_message.text("Extrayendo comentarios...")
+                    if st.button('Confirmar Eleccion'):
                     
-            comments_df = df.join(df['url'].apply(fetch_comments_from_url))
+                        posts = []
 
-            comments_df = comments_df.explode(['CommentID', 'ParentCommentID', 'CommentAuthor', 'CommentBody', 'IsReply', 'Score'])
-
-            loading_message.empty()
-
-            if not comments_df.empty:
-                st.markdown('---')
-                st.write("Dataset finalizado.")
+                        for submission in subreddit.search(query=search_query, sort='new',limit = int(max_results)):
+                            post_date = datetime.utcfromtimestamp(submission.created_utc).strftime('%Y-%m-%d %H:%M:%S')
+                            submission.comments.replace_more(limit=0)
                             
-                # Exportar a CSV
-                csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
-                st.download_button(
-                label="Descargar CSV",
-                data=csv,
-                file_name='video_comments.csv',
-                mime='text/csv')
+                            # Append post and comments data to the list
+                            posts.append({
+                                "subreddit": subreddit_name,
+                                "title": submission.title,
+                                "score": submission.score,
+                                "url": submission.url,
+                                "post_text": submission.selftext,
+                                "date_created": post_date
+                            })
+                        
+                        comments_df = pd.DataFrame(posts)
+
+                        st.write('Posteos encontrados:')
+                        st.dataframe(comments_df)
+
+                        # Crear un contenedor temporal
+                        loading_message = st.empty()
+
+                        # Mostrar un mensaje de carga
+                        loading_message.text("Extrayendo comentarios...")
+                        
+                        comments_df = comments_df.join(comments_df['url'].apply(fetch_comments_from_url))
+                        
+                        comments_df = comments_df.explode(['CommentID', 'ParentCommentID', 'CommentAuthor', 'CommentBody', 'IsReply', 'Score'])
+                        loading_message.empty()
+
+                        if not comments_df.empty:
+
+                                st.markdown('---')
+                                st.write("Dataset finalizado.")
+                                
+                                # Exportar a CSV
+                                csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
+                                st.download_button(
+                                    label="Descargar CSV",
+                                    data=csv,
+                                    file_name='video_comments.csv',
+                                    mime='text/csv')
+
+
+        elif opcion_seleccionada == 'Extraer los últimos posteos en los que se mencionen palabras específicas y sus comentarios.':
+
+            st.markdown('---')        
+        
+            search_query = st.text_input("Indica la palabra clave para filtrar los posteos: ")
+
+            if search_query:
+
+                # Reddit client
+                reddit = praw.Reddit(
+                client_id= client_id,
+                client_secret=client_secret,
+                user_agent= str(app_name) + " by u/" + str(user_id),  # e.g., "scraper:v1.0 (by u/your_username)"
+                check_for_async=False) # It is recommended to use async but we are using sync, so i disable warnings
+
+                posts = get_last_reddit_posts(reddit ,str(search_query), 100)
+                df = pd.DataFrame(posts)
+
+                def convert_utc_to_date(utc_timestamp):
+                    return datetime.utcfromtimestamp(utc_timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                    
+                df['created_date'] = df['created_date'].apply(convert_utc_to_date)
+
+                st.write('Posteos encontrados:')
+                st.dataframe(df)
+
+                # Crear un contenedor temporal
+                loading_message = st.empty()
+
+                # Mostrar un mensaje de carga
+                loading_message.text("Extrayendo comentarios...")
+                        
+                comments_df = df.join(df['url'].apply(fetch_comments_from_url))
+
+                comments_df = comments_df.explode(['CommentID', 'ParentCommentID', 'CommentAuthor', 'CommentBody', 'IsReply', 'Score'])
+
+                loading_message.empty()
+
+                if not comments_df.empty:
+                    st.markdown('---')
+                    st.write("Dataset finalizado.")
+                                
+                    # Exportar a CSV
+                    csv = comments_df.to_csv(index=False, encoding = 'utf-8-sig').encode('utf-8-sig')
+                    st.download_button(
+                    label="Descargar CSV",
+                    data=csv,
+                    file_name='video_comments.csv',
+                    mime='text/csv')
 
 elif fuente == 'Twitter':
 
