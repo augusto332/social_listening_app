@@ -1,1 +1,7 @@
 google-api-python-client
+streamlit
+pandas
+re
+praw
+datetime
+requests
